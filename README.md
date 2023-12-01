@@ -3,8 +3,8 @@
 ## Setup
 
 ```shell
-git clone https://github.com/acodeninja/pairing-interview-tagging-function.git
-cd pairing-interview-tagging-function
+git clone https://github.com/acodeninja/cloud-engineer-automation-assessment.git
+cd cloud-engineer-automation-assessment
 pip install poetry
 poetry install
 ```
