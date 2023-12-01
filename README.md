@@ -1,4 +1,4 @@
-# Cloud Engineer Automation Test
+# Cloud Engineer Automation Assessment
 
 ## Setup
 
