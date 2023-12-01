@@ -1,5 +1,7 @@
 # Cloud Engineer Automation Assessment
 
+Exercise to assess an engineer's familiarity with cloud automation scripts.
+
 ## Setup
 
 ```shell
@@ -36,3 +38,7 @@ def object_scanner(event, context):
     - If `scan_object` returns `INFECTED` tag the S3 object with `ScanState: infected`.
     - If `scan_object` returns `None` do not add the `ScanState` tag to the object.
     - Any existing tags on the S3 object must remain.
+4. The challenge is complete once all tests pass, use `poetry run pytest` to check this.
+
+> [!NOTE]
+> For an interesting challenge, start by completing the challenge with `EVENT_TYPE` set to `S3`. Then set `EVENT_TYPE` to `SQS` and refactor your lambda function to work with SQS events.
