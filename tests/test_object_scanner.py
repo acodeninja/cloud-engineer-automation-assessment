@@ -1,9 +1,11 @@
 from datetime import date
+from unittest.mock import patch
 
 import boto3
 import pytest
 
 from object_scanner import object_scanner, EVENT_TYPE
+from object_scanner.scan import scan_object
 from tests.doubles.aws_context import AWSLambdaContext
 from tests.doubles.aws_events import s3_event, sqs_event
 
@@ -43,9 +45,9 @@ def test_object_is_tagged_with_scan_state_tag(key, tag_value):
 
 @pytest.mark.parametrize("key",
                          [
-                             ('liberty.jpeg'),
-                             ('poem.txt'),
-                             ('flame.png'),
+                             'liberty.jpeg',
+                             'poem.txt',
+                             'flame.png',
                          ])
 def test_object_is_tagged_with_scan_date_tag(key):
     object_scanner(EVENTS[EVENT_TYPE](key), AWSLambdaContext)
@@ -53,6 +55,19 @@ def test_object_is_tagged_with_scan_date_tag(key):
     tags = get_s3_object_tags('test-bucket', key)
 
     assert tags.get('ScanDate') == date.today().isoformat()
+
+
+@pytest.mark.parametrize("key",
+                         [
+                             'liberty.jpeg',
+                             'poem.txt',
+                             'flame.png',
+                         ])
+@patch('object_scanner.object_scanner.scan_object', wraps=scan_object)
+def test_scan_object_is_called_with_expected_objects(scan_object_patch, key):
+    object_scanner(EVENTS[EVENT_TYPE](key), AWSLambdaContext)
+
+    scan_object_patch.assert_called_with('test-bucket', key)
 
 
 def get_s3_object_tags(bucket: str, key: str):
