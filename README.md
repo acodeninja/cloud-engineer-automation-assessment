@@ -37,7 +37,7 @@ def object_scanner(event, context):
     - If `scan_object` returns `NOT_INFECTED` tag the S3 object with `ScanState: clean`.
     - If `scan_object` returns `INFECTED` tag the S3 object with `ScanState: infected`.
     - If `scan_object` returns `None` do not add the `ScanState` tag to the object.
-    - Any existing tags on the S3 object must remain.
+    - Any existing tags on the S3 object must remain. **A test does not exist for this, you must implement this test in [`test_object_retains_existing_tags`](./tests/test_object_scanner.py#L24).**
 4. The challenge is complete once all tests pass, use `poetry run pytest` to check this.
 
 > [!NOTE]

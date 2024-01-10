@@ -21,12 +21,12 @@ EVENTS = {
                              ('poem.txt', None),
                              ('flame.png', 'infected'),
                          ])
-def test_object_retain_object_type_tag(key, tag_value):
-    object_scanner(EVENTS[EVENT_TYPE](key), AWSLambdaContext)
-
-    tags = get_s3_object_tags('test-bucket', key)
-
-    assert tags.get('ObjectType') == 'user-id-upload'
+def test_object_retains_existing_tags(key, tag_value):
+    """
+    Write a test that ensures scanned objects retain existing tags.
+    All objects should retain the tag "ObjectType: user-id-upload".
+    """
+    pass
 
 
 @pytest.mark.parametrize("key,tag_value",
