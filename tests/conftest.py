@@ -39,7 +39,7 @@ def mock_s3_client():
                             'Key': 'ObjectType',
                             'Value': 'user-id-upload'
                         },
-                    ]
+                    ],
                 },
             )
         yield s3_client

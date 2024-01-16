@@ -21,20 +21,6 @@ EVENTS = {
                              ('poem.txt', None),
                              ('flame.png', 'infected'),
                          ])
-def test_object_retains_existing_tags(key, tag_value):
-    """
-    Write a test that ensures scanned objects retain existing tags.
-    All objects should retain the tag "ObjectType: user-id-upload".
-    """
-    pass
-
-
-@pytest.mark.parametrize("key,tag_value",
-                         [
-                             ('liberty.jpeg', 'clean'),
-                             ('poem.txt', None),
-                             ('flame.png', 'infected'),
-                         ])
 def test_object_is_tagged_with_scan_state_tag(key, tag_value):
     object_scanner(EVENTS[EVENT_TYPE](key), AWSLambdaContext)
 
@@ -75,3 +61,17 @@ def get_s3_object_tags(bucket: str, key: str):
     response = s3_client.get_object_tagging(Bucket=bucket, Key=key)
 
     return {tag['Key']: tag['Value'] for tag in response['TagSet']}
+
+
+@pytest.mark.parametrize("key",
+                         [
+                             'liberty.jpeg',
+                             'poem.txt',
+                             'flame.png',
+                         ])
+def test_object_retains_existing_tags(key, tag_value):
+    """
+    Write a test that ensures scanned objects retain existing tags.
+    All objects should retain the tag "ObjectType: user-id-upload".
+    """
+    raise NotImplementedError()
