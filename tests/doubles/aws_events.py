@@ -1,10 +1,16 @@
 import json
 import uuid
 from pathlib import Path
+from typing import Union, List
 
 
-def s3_event(fixture_name: str):
+def s3_event(fixture_name: Union[str | List[str]]):
     file = Path(__file__).parent.parent.joinpath(f'fixtures/{fixture_name}')
+
+    if isinstance(fixture_name, list):
+        return {
+            "Records": [s3_event(f)["Records"][0] for f in fixture_name],
+        }
 
     return {
         "Records": [

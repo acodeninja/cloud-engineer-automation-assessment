@@ -56,6 +56,22 @@ def test_scan_object_is_called_with_expected_objects(scan_object_patch, key):
     scan_object_patch.assert_called_with('test-bucket', key)
 
 
+def test_multiple_objects_are_tagged_when_passed():
+    files = [
+        ('liberty.jpeg', 'clean'),
+        ('poem.txt', None),
+        ('flame.png', 'infected'),
+    ]
+
+    object_scanner(EVENTS[EVENT_TYPE]([f[0] for f in files]), AWSLambdaContext)
+
+    for file, tag_value in files:
+        tags = get_s3_object_tags('test-bucket', file)
+
+        assert tags.get('ScanDate') == date.today().isoformat()
+        assert tags.get('ScanState') == tag_value
+
+
 def get_s3_object_tags(bucket: str, key: str):
     s3_client = boto3.client('s3')
     response = s3_client.get_object_tagging(Bucket=bucket, Key=key)
@@ -69,7 +85,7 @@ def get_s3_object_tags(bucket: str, key: str):
                              'poem.txt',
                              'flame.png',
                          ])
-def test_object_retains_existing_tags(key, tag_value):
+def test_object_retains_existing_tags(key):
     """
     Write a test that ensures scanned objects retain existing tags.
     All objects should retain the tag "ObjectType: user-id-upload".
